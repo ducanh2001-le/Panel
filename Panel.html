@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inject Group Menu</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #181a1b;
+      color: #c1c1c1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 60px;
+      background: #1f1f1f;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 10px;
+    }
+
+    .sidebar button {
+      background: none;
+      border: none;
+      margin: 10px 0;
+      cursor: pointer;
+      padding: 10px;
+      border-radius: 5px;
+      transition: background 0.3s;
+    }
+
+    .sidebar button:hover {
+      background: #343434;
+    }
+
+    .sidebar button img {
+      width: 30px;
+      height: 30px;
+      filter: brightness(0) invert(1);
+    }
+
+    /* Main Content */
+    .content {
+      flex: 1;
+      padding: 20px;
+    }
+
+    .content h2 {
+      color: #54e1c5;
+      margin-bottom: 20px;
+    }
+
+    .toggle-group {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 15px;
+      position: relative;
+    }
+
+    .toggle-group label {
+      font-size: 1rem;
+    }
+
+    .button {
+      padding: 10px 20px;
+      background: #54e1c5;
+      border: none;
+      border-radius: 5px;
+      color: #000;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .button:hover {
+      background: #43b39a;
+    }
+
+    /* Panel key */
+    .key-panel {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      background-color: #000;
+      color: #fff;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      z-index: 9999;
+    }
+
+    .key-panel input {
+      margin: 10px;
+      padding: 10px;
+      background-color: #181a1b;
+      border: 1px solid #54e1c5;
+      color: #fff;
+    }
+
+    .key-panel button {
+      background-color: #54e1c5;
+      color: #000;
+      padding: 10px;
+      border: none;
+      margin-top: 10px;
+      cursor: pointer;
+    }
+
+    .message {
+      margin-top: 20px;
+      color: #54e1c5;
+      font-weight: bold;
+    }
+
+    /* REGBOT Effects */
+    .toggle-group span {
+      display: inline-block;
+      border-radius: 10px;
+      padding: 5px;
+      background: #555;
+      transition: all 0.3s ease-in-out;
+    }
+
+    .toggle-group input:checked + .slider {
+      background-color: #54e1c5;
+    }
+
+    .toggle-group input:checked + .slider:before {
+      transform: translateX(20px);
+    }
+
+    .toggle-group input:checked + .slider {
+      animation: glow 1s infinite alternate;
+    }
+
+    @keyframes glow {
+      0% {
+        box-shadow: 0 0 10px #54e1c5, 0 0 20px #54e1c5, 0 0 30px #54e1c5;
+      }
+      100% {
+        box-shadow: 0 0 10px #43b39a, 0 0 20px #43b39a, 0 0 30px #43b39a;
+      }
+    }
+
+    /* FPS and Device Info */
+    .info {
+      margin: 10px 0;
+    }
+
+    #fps {
+      color: green;
+      font-weight: bold;
+    }
+
+    #device-name {
+      color: #54e1c5;
+    }
+
+    /* LED Glow for REGBOT labels */
+    .regbot-label {
+      font-size: 1.2rem;
+      padding: 10px;
+      border-radius: 5px;
+      transition: all 0.5s ease-in-out;
+      color: #fff;
+      background: #333;
+      text-align: center;
+    }
+
+    .regbot-label.active {
+      animation: ledGlow 1s infinite alternate;
+      color: #54e1c5;
+    }
+
+    @keyframes ledGlow {
+      0% {
+        text-shadow: 0 0 5px #54e1c5, 0 0 10px #54e1c5, 0 0 15px #54e1c5;
+      }
+      100% {
+        text-shadow: 0 0 5px #43b39a, 0 0 10px #43b39a, 0 0 15px #43b39a;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Panel Key -->
+  <div id="keyPanel" class="key-panel">
+    <h2>Please enter your credentials</h2>
+    <input type="text" id="username" placeholder="User:">
+    <input type="password" id="password" placeholder="Password:">
+    <button onclick="checkCredentials()">Login</button>
+  </div>
+
+  <div class="sidebar" style="display: none;">
+    <button onclick="showTab('home')"><img src="https://img.icons8.com/ios-filled/50/home.png" alt="Home"></button>
+    <button onclick="showTab('regbot')"><img src="https://img.icons8.com/ios-filled/50/skull.png" alt="Regbot"></button>
+    <button onclick="showTab('settings')"><img src="https://img.icons8.com/ios-filled/50/settings.png" alt="Settings"></button>
+  </div>
+
+  <div class="content" style="display: none;">
+    <!-- Home Content -->
+    <div id="home" class="tab-content">
+      <h2>Home</h2>
+      <p>PANEL MADE BY ADMIN @LEDUCPER</p>
+      <p>SUBSCRIBE TO MY CHANNEL - ENJOY UR TIME!</p>
+    </div>
+
+    <!-- REGBOT Content -->
+    <div id="regbot" class="tab-content" style="display: none;">
+      <h2>REGBOT PANEL</h2>
+      <div class="toggle-group">
+        <label class="regbot-label" id="external">1. REGBOT External (AI)</label>
+        <label class="toggle">
+          <input type="checkbox" onchange="toggleMessage(this, 'external')">
+          <span class="slider"></span>
+        </label>
+      </div>
+      <div class="toggle-group">
+        <label class="regbot-label" id="dpi">2. DPI PLUS</label>
+        <label class="toggle">
+          <input type="checkbox" onchange="toggleMessage(this, 'dpi')">
+          <span class="slider"></span>
+        </label>
+      </div>
+      <div class="toggle-group">
+        <label class="regbot-label" id="fixlag">3. FIXLAG</label>
+        <label class="toggle">
+          <input type="checkbox" onchange="toggleMessage(this, 'fixlag')">
+          <span class="slider"></span>
+        </label>
+      </div>
+      <div class="toggle-group">
+        <label class="regbot-label" id="antiban">4. ANTIBAN</label>
+        <label class="toggle">
+          <input type="checkbox" onchange="toggleMessage(this, 'antiban')">
+          <span class="slider"></span>
+        </label>
+      </div>
+      <div id="successMessage" class="message" style="display: none;">Đã cài đặt thành công!</div>
+      <div id="failureMessage" class="message" style="display: none;">Đã tắt thành công!</div>
+    </div>
+
+    <!-- Settings Content -->
+    <div id="settings" class="tab-content" style="display: none;">
+      <h2>Settings</h2>
+      <div class="info">
+        <span>FPS: </span> <span id="fps">good</span>
+      </div>
+      <div class="info">
+        <span>Device: </span> <span id="device-name">Unknown</span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Toggle the success/failure message
+    function toggleMessage(checkbox, id) {
+      const successMessage = document.getElementById('successMessage');
+      const failureMessage = document.getElementById('failureMessage');
+      const regbotLabel = document.getElementById(id);
+
+      if (checkbox.checked) {
+        successMessage.style.display = 'block';
+        failureMessage.style.display = 'none';
+        regbotLabel.classList.add('active'); // Activate LED effect
+      } else {
+        successMessage.style.display = 'none';
+        failureMessage.style.display = 'block';
+        regbotLabel.classList.remove('active'); // Deactivate LED effect
+      }
+    }
+
+    // Show tabs
+    function showTab(tab) {
+      const tabs = document.querySelectorAll('.tab-content');
+      tabs.forEach((t) => t.style.display = 'none');
+      document.getElementById(tab).style.display = 'block';
+    }
+
+    // Check credentials and show the menu
+    function checkCredentials() {
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+      
+      if (username === 'leduc' && password === '123') {
+        document.getElementById('keyPanel').style.display = 'none';
+        document.querySelector('.sidebar').style.display = 'flex';
+        document.querySelector('.content').style.display = 'block';
+      } else {
+        alert('Invalid username or password');
+      }
+    }
+
+    // Set FPS and Device info
+    document.getElementById('fps').textContent = "good";
+
+    // Get Device Name and iOS version
+    const deviceName = "Unknown";
+    const iosVersion = "Unknown";
+    document.getElementById('device-name').textContent = ` - `;
+  </script>
+</body>
+</html>
